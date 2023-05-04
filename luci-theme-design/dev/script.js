@@ -58,11 +58,12 @@
      * @returns {boolean} success?
      */
     function getCurrentNodeByUrl() {
-        var ret = false;
         if (!$('body').hasClass('logged-in')) {
             luciLocation = ["Main", "Login"];
             return true;
         }
+        const urlReg = new RegExp(nodeUrl + "$")
+        var ret = false;
         $(".main > .main-left > .nav > .slide > .active").next(".slide-menu").stop(true).slideUp("fast");
         $(".main > .main-left > .nav > .slide > .menu").removeClass("active");
         $(".main > .main-left > .nav > .slide > .menu").each(function () {
@@ -72,7 +73,7 @@
                 var that = $(this);
                 var href = that.attr("href");
 
-                if (new RegExp(nodeUrl + "$").test(href)) {
+                if (urlReg.test(href)) {
                     ulNode.click();
                     ulNode.next(".slide-menu").stop(true, true);
                     lastNode = that.parent();
@@ -109,13 +110,6 @@
         }
     });
 
-    if ($("#cbi-dhcp-lan-ignore").length > 0) {
-        observer.observe(document.getElementById("cbi-dhcp-lan-ignore"), {
-            subtree: true,
-            attributes: true
-        });
-    }
-
     /**
      * hook menu click and add the hash
      */
@@ -148,9 +142,6 @@
         $("body").addClass(mainNodeName);
     }
     
-    $(".cbi-button-up").val("");
-    $(".cbi-button-down").val("");
-
     /**
      * hook other "A Label" and add hash to it.
      */
@@ -172,6 +163,7 @@
      * Sidebar expand
      */
     var showSide = false;
+
     $(".showSide").click(function () {
         if (showSide) {
             $(".darkMask").stop(true).fadeOut("fast");
@@ -179,22 +171,23 @@
                 width: "0"
             }, "fast");
             $(".main-right").css("overflow-y", "auto");
+            $("header>.container>.brand").css("padding", "0 4.5rem")
             showSide = false;
         } else {
             $(".darkMask").stop(true).fadeIn("fast");
             $(".main-left").stop(true).animate({
-                width: "17rem"
+                width: "18rem"
             }, "fast");
             $(".main-right").css("overflow-y", "hidden");
             $(".showSide").css("display", "none");
-            $("header").css("box-shadow", "17rem 2px 4px rgb(0 0 0 / 8%)")
+            $("header").css("box-shadow", "18rem 2px 4px rgb(0 0 0 / 8%)")
+            $("header>.container>.brand").css("padding", '0rem')
             showSide = true;
         }
     });
 
     $(".darkMask").click(function () {
         if (showSide) {
-            showSide = false;
             $(".darkMask").stop(true).fadeOut("fast");
             $(".main-left").stop(true).animate({
                 width: "0"
@@ -202,28 +195,28 @@
             $(".main-right").css("overflow-y", "auto");
             $(".showSide").css("display", "");
             $("header").css("box-shadow", "0 2px 4px rgb(0 0 0 / 8%)")
+            $("header>.container>.brand").css("padding", "0 4.5rem")
+            showSide = false;
         }
     });
 
     $(window).resize(function () {
         if ($(window).width() > 992) {
+            showSide = false;
             $(".showSide").css("display", "");
             $(".main-left").css("width", "");
             $(".darkMask").stop(true);
             $(".darkMask").css("display", "none");
-            showSide = false;
-            $("header").css("box-shadow", "17rem 2px 4px rgb(0 0 0 / 8%)")
+            $("header").css("box-shadow", "18rem 2px 4px rgb(0 0 0 / 8%)")
+            $("header>.container>.brand").css("padding", '0rem')
         } else {
             $("header").css("box-shadow", "0 2px 4px rgb(0 0 0 / 8%)")
+            $("header>.container>.brand").css("padding", "0 4.5rem")
         }
-    });
-
-    /**
-     * fix legend position
-     */
-    $("legend").each(function () {
-        var that = $(this);
-        that.after("<span class='panel-title'>" + that.text() + "</span>");
+        if (showSide) {
+            $("header").css("box-shadow", "18rem 2px 4px rgb(0 0 0 / 8%)")
+            $("header>.container>.brand").css("padding", '0rem')
+        }
     });
 
     $(".main-right").focus();

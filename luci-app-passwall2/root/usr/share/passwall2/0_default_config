@@ -15,6 +15,9 @@ config global
 dns.google.com 8.8.8.8'
 	option close_log '0'
 	option loglevel 'error'
+	
+config global_haproxy
+	option balancing_enable '0'
 
 config global_delay
 	option auto_on '0'
@@ -70,6 +73,7 @@ config nodes 'myshunt'
 	option AD 'nil'
 	option BT '_direct'
 	option Netflix 'nil'
+	option OpenAI 'nil'
 	option TVB 'nil'
 	option Proxy '_default'
 	option China '_direct'
@@ -173,6 +177,10 @@ config shunt_rules 'Netflix'
 	option remarks 'Netflix'
 	option network 'tcp,udp'
 	option domain_list 'geosite:netflix'
+	
+config shunt_rules 'OpenAI'
+	option remarks 'OpenAI'
+	option domain_list 'geosite:openai'
 
 config shunt_rules 'TVB'
 	option remarks 'TVB'
