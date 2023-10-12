@@ -615,6 +615,14 @@ return view.extend({
 		so.datatype = 'port';
 		so.depends('type', 'direct');
 
+		so = ss.option(form.ListValue, 'proxy_protocol', _('Proxy protocol'),
+			_('Write Proxy Protocol in the connection header.'));
+		so.value('', _('Disable'));
+		so.value('1');
+		so.value('2');
+		so.depends('type', 'direct');
+		so.modalonly = true;
+
 		/* Hysteria (2) config start */
 		so = ss.option(form.ListValue, 'hysteria_protocol', _('Protocol'));
 		so.value('udp');
@@ -948,8 +956,8 @@ return view.extend({
 		so.modalonly = true;
 
 		so = ss.option(form.Value, 'http_method', _('Method'));
-		so.value('GET', _('GET'));
-		so.value('PUT', _('PUT'));
+		so.value('get', _('GET'));
+		so.value('put', _('PUT'));
 		so.depends('transport', 'http');
 		so.modalonly = true;
 
