@@ -195,7 +195,9 @@ function parseShareLink(uri, features) {
 				config.grpc_servicename = params.get('serviceName');
 				break;
 			case 'ws':
-				config.ws_host = params.get('host') ? decodeURIComponent(params.get('host')) : null;
+				/* We don't parse "host" param when TLS is enabled, as some providers are abusing it (host vs sni)
+				 * config.ws_host = params.get('host') ? decodeURIComponent(params.get('host')) : null;
+				 */
 				config.ws_path = params.get('path') ? decodeURIComponent(params.get('path')) : null;
 				if (config.ws_path && config.ws_path.includes('?ed=')) {
 					config.websocket_early_data_header = 'Sec-WebSocket-Protocol';
@@ -272,7 +274,8 @@ function parseShareLink(uri, features) {
 				}
 				break;
 			case 'ws':
-				config.ws_host = params.get('host') ? decodeURIComponent(params.get('host')) : null;
+				/* We don't parse "host" param when TLS is enabled, as some providers are abusing it (host vs sni) */
+				config.ws_host = (config.tls !== '1' && params.get('host')) ? decodeURIComponent(params.get('host')) : null;
 				config.ws_path = params.get('path') ? decodeURIComponent(params.get('path')) : null;
 				if (config.ws_path && config.ws_path.includes('?ed=')) {
 					config.websocket_early_data_header = 'Sec-WebSocket-Protocol';
@@ -329,7 +332,8 @@ function parseShareLink(uri, features) {
 				}
 				break;
 			case 'ws':
-				config.ws_host = uri.host;
+				/* We don't parse "host" param when TLS is enabled, as some providers are abusing it (host vs sni) */
+				config.ws_host = (config.tls !== '1') ? uri.host : null;
 				config.ws_path = uri.path;
 				if (config.ws_path && config.ws_path.includes('?ed=')) {
 					config.websocket_early_data_header = 'Sec-WebSocket-Protocol';
@@ -559,6 +563,10 @@ return view.extend({
 						var encmode = this.map.lookupOption('shadowsocks_encrypt_method', section_id)[0].formvalue(section_id);
 						if (encmode === 'none')
 							return true;
+						else if (encmode === '2022-blake3-aes-128-gcm')
+							return hp.validateBase64Key(24, section_id, value);
+						else if (['2022-blake3-aes-256-gcm', '2022-blake3-chacha20-poly1305'].includes(encmode))
+							return hp.validateBase64Key(44, section_id, value);
 					}
 					if (!value)
 						return _('Expecting: %s').format(_('non-empty value'));

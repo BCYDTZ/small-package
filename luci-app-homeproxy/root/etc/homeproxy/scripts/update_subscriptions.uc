@@ -259,7 +259,9 @@ function parse_uri(uri) {
 				config.grpc_servicename = params.serviceName;
 				break;
 			case 'ws':
-				config.ws_host = params.host ? urldecode(params.host) : null;
+				/* We don't parse "host" param when TLS is enabled, as some providers are abusing it (host vs sni)
+				 * config.ws_host = params.host ? urldecode(params.host) : null;
+				 */
 				config.ws_path = params.path ? urldecode(params.path) : null;
 				if (config.ws_path && match(config.ws_path, /\?ed=/)) {
 					config.websocket_early_data_header = 'Sec-WebSocket-Protocol';
@@ -342,7 +344,8 @@ function parse_uri(uri) {
 				}
 				break;
 			case 'ws':
-				config.ws_host = params.host ? urldecode(params.host) : null;
+				/* We don't parse "host" param when TLS is enabled, as some providers are abusing it (host vs sni) */
+				config.ws_host = (config.tls !== '1' && params.host) ? urldecode(params.host) : null;
 				config.ws_path = params.path ? urldecode(params.path) : null;
 				if (config.ws_path && match(config.ws_path, /\?ed=/)) {
 					config.websocket_early_data_header = 'Sec-WebSocket-Protocol';
@@ -417,7 +420,8 @@ function parse_uri(uri) {
 				}
 				break;
 			case 'ws':
-				config.ws_host = uri.host;
+				/* We don't parse "host" param when TLS is enabled, as some providers are abusing it (host vs sni) */
+				config.ws_host = (config.tls !== '1') ? uri.host : null;
 				config.ws_path = uri.path;
 				if (config.ws_path && match(config.ws_path, /\?ed=/)) {
 					config.websocket_early_data_header = 'Sec-WebSocket-Protocol';
