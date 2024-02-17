@@ -131,6 +131,14 @@ git clone --depth 1 https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest c
 git clone --depth 1 https://github.com/doushang/luci-app-shortcutmenu luci-shortcutmenu && mv -n luci-shortcutmenu/luci-app-shortcutmenu ./ ; rm -rf luci-shortcutmenu
 git clone --depth 1 https://github.com/sbilly/netmaker-openwrt && mv -n netmaker-openwrt/netmaker ./; rm -rf netmaker-openwrt
 git clone --depth 1 https://github.com/coolsnowwolf/packages && mv -n packages/multimedia/UnblockNeteaseMusic-Go packages/net/msd_lite ./ ; rm -rf packages
+git clone --depth 1 https://github.com/gSpotx2f/luci-app-internet-detector
+git clone --depth 1 https://github.com/vinewx/NanoHatOLED; mv NanoHatOLED/nanohatoled ./;rm -rf NanoHatOLED
+git clone --depth 1 https://github.com/zerolabnet/luci-app-torbp
+git clone --depth 1 https://github.com/muink/luci-app-tinyfilemanager
+git clone --depth 1 https://github.com/sbwml/luci-app-airconnect airconnect1 && mv airconnect1/* ./ && rm -rf airconnect1
+git clone --depth 1 https://github.com/sirpdboy/luci-theme-kucat -b js --depth 1
+git clone --depth 1 https://github.com/blueberry-pie-11/luci-app-natmap
+git clone --depth 1 https://github.com/QiuSimons/luci-app-daed-next daed1 && mvdir daed1
 
 svn export https://github.com/coolsnowwolf/luci/trunk/libs/luci-lib-ipkg
 svn export https://github.com/x-wrt/packages/trunk/net/nft-qos
@@ -160,7 +168,7 @@ package/base-files package/network/config/firewall4 package/network/config/firew
 package/network/services/dnsmasq package/libs/openssl
 
 git_sparse_clone master "https://github.com/immortalwrt/packages" "immpack" net/sub-web net/dnsproxy net/haproxy net/cdnspeedtest \
-net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gowebdav \
+net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gowebdav net/udp2raw \
 admin/btop libs/wxbase libs/rapidjson libs/libcron libs/quickjspp libs/toml11 libs/libtorrent-rasterbar \
 libs/libdouble-conversion libs/qt6base libs/cxxopts libs/jpcre2 libs/alac \
 utils/cpulimit devel/gn
